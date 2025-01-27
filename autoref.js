@@ -22,20 +22,8 @@ function createNewWallet() {
 
 
 async function saveWalletToFile(walletDetails) {
-    let wallets = [];
     try {
-        if (await fs.stat("wallets.json").catch(() => false)) {
-            const data = await fs.readFile("wallets.json", "utf8");
-            wallets = JSON.parse(data);
-        }
-    } catch (err) {
-        log.error("Error reading wallets.json:", err);
-    }
-
-    wallets.push(walletDetails);
-
-    try {
-        await fs.writeFile("wallets.json", JSON.stringify(wallets, null, 2));
+        await fs.appendFile("wallets.json", JSON.stringify(walletDetails) + "\n");
         log.info("Wallet saved to wallets.json");
     } catch (err) {
         log.error("Error writing to wallets.json:", err);
